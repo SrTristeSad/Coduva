@@ -1,52 +1,62 @@
 # Coduva
 
-**IDE mobile para Android: edite, execute e teste projetos diretamente no celular.**
+**Editor de código para Android, com prévia web integrada e núcleos opcionais.**
 
-> Status: **planejamento inicial**. Este repositório ainda não contém um aplicativo funcional. O nome e as decisões técnicas podem evoluir.
+> **Etapa de desenvolvimento 0.1.0:** o repositório contém código Flutter inicial, mas **ainda não há APK compilado/testado**, nem um núcleo PHP ou MariaDB executável. A licença também ainda não foi definida.
 
-## Visão
+## Estado das funcionalidades
 
-O Coduva pretende unir um editor de código pensado para toque, gerenciamento fácil de arquivos, autocompletar inteligente e ambientes de desenvolvimento locais e remotos. O objetivo é permitir trabalhar com projetos reais, não apenas visualizar ou colorir textos.
+| Recurso | Estado |
+| --- | --- |
+| Edição de arquivos em workspace privado | Implementação inicial |
+| Tema claro por padrão; escuro opcional | Implementação inicial |
+| Explorar arquivos por gesto da borda esquerda | Implementação inicial |
+| Terminal compacto por gesto da borda direita | Interface inicial; shell ainda pendente |
+| HTML/CSS/JavaScript sem instalação | Servidor local Dart + WebView implementados; testes em Android pendentes |
+| PHP instalado via GitHub Releases | Catálogo + download seguro; release e host Android pendentes |
+| MariaDB / MySQL via GitHub Releases | Catálogo + download seguro; release e host Android pendentes |
+| SQLite integrado e LSP | Planejados, não implementados |
 
-O **tema claro será o padrão**; o tema escuro será opcional. A tela deve priorizar o código e reduzir menus permanentes.
+**Importante:** o servidor estático nunca executa nem divulga arquivos PHP. O app não afirma que PHP já funciona só porque conseguiu baixar um ZIP. Android 10+ impõe restrições à execução de binários baixados; consulte a arquitetura antes de distribuir núcleos.
 
-## Compromissos da versão 1.0
+## Rodar o código no Android
 
-- **Editor** com realce de sintaxe, abas, busca/substituição, desfazer/refazer, salvamento seguro e teclado mobile bem atendido.
-- **Mini explorador de projeto:** deslizar da **borda esquerda para a direita** abre uma árvore compacta de pastas e arquivos; tocar em um arquivo abre no editor.
-- **Terminal compacto:** deslizar da **borda direita para a esquerda** revela o terminal integrado, por padrão em um painel inferior redimensionável.
-- **Autocompletar inteligente:** sugestões por contexto, parâmetros, diagnósticos e navegação de símbolos, com arquitetura baseada em LSP quando apropriado.
-- **Desenvolvimento web local:** HTML, CSS, JavaScript, **servidor PHP** e visualização integrada em WebView.
-- **SQL desde a 1.0:** SQLite e suporte a MySQL/MariaDB, com gerência de conexões, consultas e testes de aplicações PHP. O funcionamento de MariaDB local sem root é um requisito de engenharia sujeito à validação de compatibilidade, não uma capacidade já implementada.
-- **Linux local e remoto:** estudar userland Linux leve no Android sem root; conexão a servidores via SSH/SFTP.
-- **Gerenciador de ambientes:** permitir instalar e administrar ferramentas como Python, Lua, Java/JDK, Node.js, PHP e, quando tecnicamente compatível, Dart/Flutter. Builds Android com Flutter podem exigir ambiente remoto.
-- **Projetos e arquivos:** abrir arquivos e pastas do Android de maneira segura, incluindo projetos existentes.
+Requer Flutter >=3.38.1, Dart >=3.10, Android SDK e Java 17. O scaffold nativo do Android é gerado localmente, sem sobrescrever `lib/`:
 
-O Coduva não exigirá a instalação de um Linux completo apenas para editar um arquivo.
+**Windows PowerShell**
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/preparar_android.ps1
+flutter run
+```
 
-## Princípios
+**Linux/macOS**
+```bash
+bash scripts/preparar_android.sh
+flutter run
+```
 
-1. **Mobile-first:** a interface não será uma cópia em miniatura da UI desktop do VS Code.
-2. **Um toque para testar:** projetos PHP deverão poder iniciar servidor e abrir a prévia integrada sem configuração manual extensa.
-3. **Offline quando possível:** edição, servidor local e ferramentas instaladas devem funcionar sem internet.
-4. **Recursos sob demanda:** dependências e núcleos de desenvolvimento não serão instalados compulsoriamente.
-5. **Segurança e controle:** execução local isolada dentro das restrições do Android; confirmação para ações destrutivas; segurança em SSH e conexões SQL.
-6. **Transparência:** documentar limitações de plataforma, consumo de armazenamento e compatibilidade de ferramentas.
+Testes:
+```bash
+flutter analyze
+flutter test
+```
 
-## Documentação
+Os testes ainda não foram executados neste ambiente (Flutter SDK indisponível). Nenhum GitHub Actions foi configurado.
 
-- [Plano do aplicativo e escopo 1.0](docs/PLANO_DO_APLICATIVO.md)
-- [Arquitetura inicial e riscos técnicos](docs/ARQUITETURA_INICIAL.md)
+## Núcleos e publicação
 
-## Situação atual
+O arquivo [assets/runtime_catalog.json](assets/runtime_catalog.json) inclui PHP e MariaDB como **em preparo**. Quando tivermos builds nativas compatíveis, disponibilizaremos os arquivos via GitHub Releases, com versão, ABI e SHA-256. O instalador só habilita pacotes que tenham esses metadados válidos; um download validado é diferente de ter um servidor executável.
 
-- [x] Repositório criado
-- [x] Visão e requisitos iniciais documentados
-- [ ] Protótipo navegável do editor
-- [ ] Prova de conceito do servidor PHP + SQL no Android
-- [ ] Implementação e testes integrados
-- [ ] Versão 1.0 validada
+Leia [Núcleos web e processo de releases](docs/NUCLEOS_WEB.md).
 
-## Código aberto e licença
+## Documentação do produto
 
-Existe uma **preferência inicial por código aberto**, com eventuais serviços remotos pagos opcionais. **A licença do repositório ainda não foi escolhida**. Apache-2.0 é uma candidata para o código autoral, mas devemos avaliar dependências, redistribuição de runtimes Linux/PHP/MariaDB, licenças dos componentes e obrigações de publicação antes da decisão. A ausência de um arquivo `LICENSE` não autoriza terceiros a redistribuir o código livremente.
+- [Plano do aplicativo 1.0](docs/PLANO_DO_APLICATIVO.md)
+- [Arquitetura inicial](docs/ARQUITETURA_INICIAL.md)
+- [Núcleos web e limites Android](docs/NUCLEOS_WEB.md)
+
+A versão 1.0 tem como requisito PHP, HTML, CSS, JavaScript e SQL, incluindo integração local; isso ainda demanda compilação nativa, testes e integração ao editor. O objetivo é um app leve e mobile-first, com Linux local/remoto e suporte a ferramentas adicionais ao longo da construção da própria versão 1.0.
+
+## Código aberto
+
+O repositório é público. Há intenção de torná-lo código aberto, porém **a licença ainda não foi selecionada**. Não interpretar um repositório público como permissão irrestrita para redistribuição.
