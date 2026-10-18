@@ -85,7 +85,7 @@ button { background: #2864ec; color: white; border: 0;
     final temporary = File('${target.path}.coduva-tmp');
     await temporary.writeAsString(content, flush: true);
     // Backups e recuperação contra interrupção serão adicionados ao editor.
-    if (await target.exists()) await target.delete();
+    // Em Android/Linux, rename sobre o arquivo existente é atômico.
     await temporary.rename(target.path);
   }
 }
