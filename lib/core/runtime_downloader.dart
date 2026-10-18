@@ -174,11 +174,11 @@ class RuntimeDownloader {
         if (received > maxArchiveBytes) {
           throw const FormatException('Pacote ultrapassa o limite de 512 MB.');
         }
-        output.add(chunk);
+        output!.add(chunk);
         onProgress?.call(received, total);
       }
-      await output.flush();
-      await output.close();
+      await output!.flush();
+      await output!.close();
       output = null;
       final actual = (await sha256.bind(temporary.openRead()).first).toString();
       if (actual.toLowerCase() != runtime.sha256sum!.toLowerCase()) {
