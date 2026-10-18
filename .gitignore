@@ -1,0 +1,19 @@
+# Flutter/Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub/
+build/
+coverage/
+**/*.iml
+.idea/
+.vscode/
+# Android local/build
+android/.gradle/
+android/local.properties
+android/key.properties
+**/gradle/wrapper/gradle-wrapper.jar
+# Runtime downloads
+*.part
+*.runtime.zip
