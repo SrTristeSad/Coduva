@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "packages": [
+    {
+      "id": "php",
+      "displayName": "PHP",
+      "description": "Servidor PHP local, com extensões PDO e MySQLi",
+      "abi": "arm64-v8a",
+      "version": null,
+      "releaseUrl": null,
+      "sha256": null,
+      "state": "awaiting-compatible-build"
+    },
+    {
+      "id": "mariadb",
+      "displayName": "MariaDB (compatível com MySQL)",
+      "description": "Servidor SQL local opcional para desenvolvimento",
+      "abi": "arm64-v8a",
+      "version": null,
+      "releaseUrl": null,
+      "sha256": null,
+      "state": "awaiting-compatible-build"
+    }
+  ]
+}
