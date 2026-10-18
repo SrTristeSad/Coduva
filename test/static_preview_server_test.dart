@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:coduva/core/static_preview_server.dart';
@@ -31,7 +32,7 @@ void main() {
   test('HTML e CSS funcionam offline via loopback', () async {
     final html = await request('/index.html');
     expect(html.statusCode, HttpStatus.ok);
-    expect(await html.transform(SystemEncoding().decoder).join(), '<h1>OK</h1>');
+    expect(await html.transform(utf8.decoder).join(), '<h1>OK</h1>');
     final css = await request('/style.css');
     expect(css.statusCode, HttpStatus.ok);
     await css.drain<void>();
